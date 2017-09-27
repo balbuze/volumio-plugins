@@ -396,12 +396,8 @@
 							"label": "S16_BE"
 						},
 						{
-							"value": "S16_4LE",
-							"label": "S16_4LE"
-						},
-						{
-							"value": "S16_4BE",
-							"label": "S16_4BE"
+							"value": "S16_NE",
+							"label": "S16_NE"
 						},
 						{
 							"value": "S24_LE",
@@ -412,12 +408,20 @@
 							"label": "S24_BE"
 						},
 						{
+							"value": "S24_NE",
+							"label": "S24_NE"
+						},
+						{
 							"value": "S24_4LE",
 							"label": "S24_4LE"
 						},
 						{
 							"value": "S24_4BE",
 							"label": "S24_4BE"
+						},
+						{
+							"value": "S24_4NE",
+							"label": "S24_4NE"
 						},
 						{
 							"value": "S32_LE",
@@ -428,12 +432,20 @@
 							"label": "S32_BE"
 						},
 						{
+							"value": "S32_NE",
+							"label": "S32_NE"
+						},
+						{
 							"value": "FLOAT_LE",
 							"label": "FLOAT_LE"
 						},
 						{
 							"value": "FLOAT_BE",
 							"label": "FLOAT_BE"
+						},
+						{
+							"value": "FLOAT_NE",
+							"label": "FLOAT_NE"
 						},
 						{
 							"value": "FLOAT64_LE",
@@ -444,8 +456,8 @@
 							"label": "FLOAT64_BE"
 						},
 						{
-							"value": "AUTO",
-							"label": "AUTO"
+							"value": "FLOAT64_NE",
+							"label": "FLOAT64_NE"
 						}
 					],
 					"visibleIf": {

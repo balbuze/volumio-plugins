@@ -12,10 +12,10 @@
     "prettyName": "Wifireconnect ver0.1.1",
     "plugin_type": "system_controller"
   },
-   "dependencies": {
+  "dependencies": {
     "fs-extra": "^0.28.0",
     "kew": "^0.7.0",
     "net": "^1.0.2",
     "v-conf": "^0.10.0"
-      }
+  }
 }

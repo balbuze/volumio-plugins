@@ -37,7 +37,7 @@
   "DESC_INSTALL_TOOLS":"Install tools to help measurements. PLEASE WAIT UNTIL UI IS REFRESHED",
   "FILTER_CREATION":"DRC-FIR Filter creation - EXPERIMENTAL",
   "CREATE_FILTER":"Generate filter",
-  "FILE_TO_CONVERT":"File to convert",
+  "FILE_TO_CONVERT":"Impulse file to convert",
   "DOC_FILE_TO_CONVERT":"Must be a 32-bit mono wav file impulse from REW. Placed in /brutefirfilters/filter-sources in the shared folder of Volumio",
   "CHOOSE_A_FILE":"Choose a file",
   "TARGET_CURVE":"Target curve",
@@ -45,6 +45,6 @@
   "OUTPUT_FILE_NAME":"Name of filter",
   "DOC_OUTPUT_FILE_NAME":"Leave empty to use the name of the file to convert or give a name. The plugin will add the rample rate, the target curve and the extension (.pcm)",
   "DRCCONFIG":"Choose a config",
-  "DOC_DRCCONFIG":"Config for DRC. Change it if you experience problem with filter generated"
+  "DOC_DRCCONFIG":"Config for DRC. Change it if you experience problem with filter generated... Soft is a good setting!"
 
 }

@@ -1,4 +1,4 @@
-/*brutefir plugin for volumio3. By balbuze 2019*/
+/*DRC-FIR plugin for volumio2. By balbuze 2019*/
 'use strict';
 
 //var io = require('socket.io-client');
@@ -136,7 +136,7 @@ ControllerBrutefir.prototype.restoreVolumioconfig = function() {
     self.logger.info('config.txt does not exist');
    }
 
-  }, 8000)
+  }, 6000)
   resolve();
  });
 };
@@ -281,30 +281,7 @@ ControllerBrutefir.prototype.onStart = function() {
  return defer.promise;
 };
 
-/*
-ControllerBrutefir.prototype.onStart = function() {
- var self = this;
- var defer = libQ.defer();
- self.autoconfig()
-self.startBrutefirDaemon()
- //self.rebuildBRUTEFIRAndRestartDaemon()
-
-  .then(function(e) {
-   setTimeout(function() {
-    self.logger.info("Starting brutefir");
-
-   }, 1000);
-  })
-  .fail(function(e) {
-   defer.reject(new Error());
-  });
- return defer.promise;
-};
-*/
-
 ControllerBrutefir.prototype.onRestart = function() {
- // self.enableLoopBackDevice();
-
  var self = this;
 
 };
@@ -324,7 +301,6 @@ ControllerBrutefir.prototype.getUIConfig = function() {
  var self = this;
  var defer = libQ.defer();
  var output_device;
- //self.sampleformat();
  output_device = self.config.get('output_device');
 
  var lang_code = this.commandRouter.sharedVars.get('language_code');
@@ -347,11 +323,7 @@ ControllerBrutefir.prototype.getUIConfig = function() {
     var filetoconvertl;
     var bkpath = "/data/INTERNAL/brutefirfilters/target-curves";
     var bkl
-    //  var sitems;
-    // var sampleformat;
-
-
-
+   
     uiconf.sections[1].content[0].value = self.config.get('ldistance');
     uiconf.sections[1].content[1].value = self.config.get('rdistance');
     uiconf.sections[2].content[3].value = self.config.get('outputfilename');
@@ -375,7 +347,6 @@ ControllerBrutefir.prototype.getUIConfig = function() {
      var fitems;
      var filetoconvert = '' + fitem;
      fitems = filetoconvert.split(',');
-     //var fitems= zfitems.replace('filter-sources','');
      self.logger.info('list of available files to convert :' + fitems);
      console.log(fitems)
      for (var i in fitems) {
@@ -415,8 +386,7 @@ ControllerBrutefir.prototype.getUIConfig = function() {
      var allfilters = allfilter.replace('filter-sources', '');
      var allfilter2 = allfilters.replace('target-curves', '');
      items = allfilter2.split(',');
-     self.logger.info('list of available filters for DRC :' + items);
-     console.log(items)
+   //  self.logger.info('list of available filters for DRC :' + items);
      for (var i in items) {
       self.configManager.pushUIConfigParam(uiconf, 'sections[0].content[1].options', {
        value: items[i],
@@ -540,12 +510,8 @@ ControllerBrutefir.prototype.setConf = function(varName, varValue) {
 
 ControllerBrutefir.prototype.createBRUTEFIRFile = function() {
  var self = this;
-
  var defer = libQ.defer();
-
-
  try {
-
   fs.readFile(__dirname + "/brutefir.conf.tmpl", 'utf8', function(err, data) {
    if (err) {
     defer.reject(new Error(err));
@@ -611,16 +577,11 @@ ControllerBrutefir.prototype.createBRUTEFIRFile = function() {
 
    if (self.config.get('leftfilter') == "Dirac pulse") {
     composeleftfilter = "dirac pulse";
-    //filterattenuation = "0"
    } else leftfilter = filter_path + self.config.get('leftfilter');
-   //lattenuation = "6";
    if (self.config.get('rightfilter') == "Dirac pulse")
     composerightfilter = "dirac pulse";
-   // filterattenuation = "0"
    else rightfilter = filter_path + self.config.get('rightfilter');
-   // rattenuation = "6";
-   //output_device = output_device;
-   console.log(output_device);
+//   console.log(output_device);
    var conf1 = data.replace("${smpl_rate}", self.config.get('smpl_rate'));
    var conf2 = conf1.replace("${filter_size}", filtersizedivided);
    var conf3 = conf2.replace("${numb_part}", num_part);
@@ -658,7 +619,6 @@ ControllerBrutefir.prototype.saveBrutefirconfigAccount2 = function(data) {
  var self = this;
  var output_device
  var input_device = "Loopback,1";
-
  output_device = self.config.get('alsa_device');
  var defer = libQ.defer();
  self.config.set('attenuation', data['attenuation'].value);
@@ -672,15 +632,12 @@ ControllerBrutefir.prototype.saveBrutefirconfigAccount2 = function(data) {
  self.config.set('output_device', data['output_device']);
  self.config.set('output_format', data['output_format'].value);
 
-
-
  self.rebuildBRUTEFIRAndRestartDaemon()
   .then(function(e) {
    self.commandRouter.pushToastMessage('success', "Configuration update", 'The configuration has been successfully updated');
    defer.resolve({});
   })
   .fail(function(e) {
-
    defer.reject(new Error('Brutefir failed to start. Check your config !'));
    self.commandRouter.pushToastMessage('error', 'Brutefir failed to start. Check your config !');
   })
@@ -904,75 +861,76 @@ ControllerBrutefir.prototype.fileconvert = function(data) {
  return defer.promise;
 };
 
-
-
-
-//here we convert file using sox
+//here we convert file using sox and generate filter with DRC-FIR
 ControllerBrutefir.prototype.convert = function(data) {
  var self = this;
  //var defer = libQ.defer();
  var inpath = "/data/INTERNAL/brutefirfilters/filter-sources/";
  var drcconfig = self.config.get('drcconfig');
- var infile = self.config.get('filetoconvert');
  var outpath = "/data/INTERNAL/brutefirfilters/";
- var outfile = self.config.get('outputfilename')
- if ((outfile == '') || (outfile == 'Empty=name of file to convert')) {
-  outfile = infile.replace('.wav', '')
- };
- var targetcurve = ' /usr/share/drc/config/';
- var outsample = self.config.get('smpl_rate');
- var BK = self.config.get('bk');
- var BKsimplified = BK.replace('.txt', '');
- var ftargetcurve
- var curve
- if ((outsample == 44100) || (outsample == 48000) || (outsample == 88200) || (outsample == 96000)) {
-  if (outsample == 44100) {
-   ftargetcurve = '44.1\\ kHz/';
-   curve = '44.1';
-  } else if (outsample == 48000) {
-   ftargetcurve = '48.0\\ kHz/';
-   curve = '48.0';
-  } else if (outsample == 88200) {
-   ftargetcurve = '88.2\\ kHz/';
-   curve = '88.2';
-  } else if (outsample == 96000) {
-   ftargetcurve = '96.0\\ kHz/';
-   curve = '96.0';
+ var infile = self.config.get('filetoconvert');
+ if (infile != 'choose a file') {
+
+  var outfile = self.config.get('outputfilename')
+  if ((outfile == '') || (outfile == 'Empty=name of file to convert')) {
+   outfile = infile.replace('.wav', '')
   };
+  var targetcurve = ' /usr/share/drc/config/'
+  var outsample = self.config.get('smpl_rate');
+  var BK = self.config.get('bk');
+  if (BK != 'choose a file') {
+   var BKsimplified = BK.replace('.txt', '');
+   var ftargetcurve
+   var curve
+   if ((outsample == 44100) || (outsample == 48000) || (outsample == 88200) || (outsample == 96000)) {
+    if (outsample == 44100) {
+     ftargetcurve = '44.1\\ kHz/';
+     curve = '44.1';
+    } else if (outsample == 48000) {
+     ftargetcurve = '48.0\\ kHz/';
+     curve = '48.0';
+    } else if (outsample == 88200) {
+     ftargetcurve = '88.2\\ kHz/';
+     curve = '88.2';
+    } else if (outsample == 96000) {
+     ftargetcurve = '96.0\\ kHz/';
+     curve = '96.0';
+    };
 
-  var destfile = (outpath + outfile + "-" + drcconfig + "-" + curve + "kHz-" + BKsimplified + ".pcm");
+    var destfile = (outpath + outfile + "-" + drcconfig + "-" + curve + "kHz-" + BKsimplified + ".pcm");
+    var BKpath = "/data/INTERNAL/brutefirfilters/target-curves/"
 
-  var BKpath = "/data/INTERNAL/brutefirfilters/target-curves/"
-
-  try {
-   execSync("/usr/bin/sox " + inpath + infile + " -t f32 /tmp/tempofilter.pcm rate -v -s " + outsample);
-   self.logger.info("/usr/bin/sox " + inpath + infile + " -t f32 /tmp/tempofilter.pcm rate -v -s " + outsample);
-  } catch (e) {
-   self.logger.info('input file does not exist ' + e);
-   self.commandRouter.pushToastMessage('error', 'Sox fails to convert file' + e);
-  };
-  try {
-   //self.commandRouter.pushToastMessage('info', 'Filter ' + destfile + ' is being generated, it may takes up to one minute, please wait!');
-   var modalData = {
-    title: (destfile + ' filter generation in progress!'),
-    message: ' Please WAIT until this page is refreshed (about 1 minute).',
-    size: 'lg'
+    try {
+     execSync("/usr/bin/sox " + inpath + infile + " -t f32 /tmp/tempofilter.pcm rate -v -s " + outsample);
+     self.logger.info("/usr/bin/sox " + inpath + infile + " -t f32 /tmp/tempofilter.pcm rate -v -s " + outsample);
+    } catch (e) {
+     self.logger.info('input file does not exist ' + e);
+     self.commandRouter.pushToastMessage('error', 'Sox fails to convert file' + e);
+    };
+    try {
+     var modalData = {
+      title: (destfile + ' filter generation in progress!'),
+      message: ' Please WAIT until this page is refreshed (about 1 minute).',
+      size: 'lg'
+     };
+     self.commandRouter.broadcastMessage("openModal", modalData);
+     execSync("/usr/bin/drc --BCInFile=/tmp/tempofilter.pcm --PSPointsFile=" + BKpath + BK + " --PSOutFile=" + destfile + targetcurve + ftargetcurve + drcconfig + "-" + curve + ".drc");
+     self.logger.info("/usr/bin/drc --BCInFile=/tmp/tempofilter.pcm --PSPointsFile=" + BKpath + BK + " --PSOutFile=" + destfile + targetcurve + ftargetcurve + drcconfig + "-" + curve + ".drc");
+     self.commandRouter.pushToastMessage('success', 'Filter ' + destfile + ' generated, Refresh the page to see it');
+     return self.commandRouter.reloadUi();
+    } catch (e) {
+     self.logger.info('drc fails to create filter ' + e);
+     self.commandRouter.pushToastMessage('error', 'Fails to generate filter, retry with other parameters' + e);
+    };
+   } else {
+    self.commandRouter.pushToastMessage('error', 'fail  !', 'Sample rate must be set to 96Khz maximum', 'for automatic filter generation');
    };
-   self.commandRouter.broadcastMessage("openModal", modalData);
-   execSync("/usr/bin/drc --BCInFile=/tmp/tempofilter.pcm --PSPointsFile=" + BKpath + BK + " --PSOutFile=" + destfile + targetcurve + ftargetcurve + drcconfig + "-" + curve + ".drc");
-   self.logger.info("/usr/bin/drc --BCInFile=/tmp/tempofilter.pcm --PSPointsFile=" + BKpath + BK + " --PSOutFile=" + destfile + targetcurve + ftargetcurve + drcconfig + "-" + curve + ".drc");
-   self.commandRouter.pushToastMessage('success', 'Filter ' + destfile + ' generated, Refresh the page to see it');
-   return self.commandRouter.reloadUi();
-  } catch (e) {
-   self.logger.info('drc fails to create filter ' + e);
-   self.commandRouter.pushToastMessage('error', 'Fails to generate filter, retry with other parameters' + e);
+  } else {
+   self.commandRouter.pushToastMessage('error', 'fail  !', 'You must choose a target curve!');
   };
  } else {
-  self.commandRouter.pushToastMessage('error', 'fail  !', 'Sample rate must be set to 96Khz maximum', 'for automatic filter generation');
+  self.commandRouter.pushToastMessage('error', 'fail  !', 'You must choose a file to convert!');
  };
-
- //self.logger.info("zrrrrrrrrrrrrrrrrrrrrzrrrrrrrrrrrrrrr" + inpath + infile + " -t f32 /tmp/tempofilter.pcm rate -v -s "+ outsample);
-
 };
 
 
@@ -1045,10 +1003,9 @@ ControllerBrutefir.prototype.setVolumeParameters = function() {
   // once completed, uncomment
 
   return self.commandRouter.volumioUpdateVolumeSettings(settings)
-  self.logger.info('tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt' + settings)
-  //setTimeout(function() {      
+  //self.logger.info('ttttttttttttttt' + settings)
   //resolve();
- }, 8000);
+ }, 20);
 
  //});
  // return defer.promise;
@@ -1057,7 +1014,6 @@ ControllerBrutefir.prototype.setVolumeParameters = function() {
 ControllerBrutefir.prototype.saveHardwareAudioParameters = function() {
  var self = this;
  var defer = libQ.defer();
-
  var conf;
  // we save the alsa configuration for future needs here, note we prepend alsa_ to avoid confusion with other brutefir settings
  //volumestart
@@ -1099,20 +1055,18 @@ ControllerBrutefir.prototype.outputDeviceCallback = function() {
  var defer = libQ.defer();
  setTimeout(function() {
   self.setVolumeParameters()
- }, 2500);
+ }, 500);
  self.restoreVolumioconfig()
- //  self.rebuildBRUTEFIRAndRestartDaemon()
  defer.resolve()
  return defer.promise;
 };
 
-//here we set the Loopback output
+//here we set the Loopback output 
 ControllerBrutefir.prototype.setLoopbackoutput = function() {
  var self = this;
  var defer = libQ.defer();
  var outputp
  outputp = self.config.get('alsa_outputdevicename')
- //setTimeout(function() {
  var stri = {
   "output_device": {
    "value": "Loopback",
@@ -1122,7 +1076,7 @@ ControllerBrutefir.prototype.setLoopbackoutput = function() {
  setTimeout(function() {
   self.commandRouter.executeOnPlugin('system_controller', 'i2s_dacs', 'disableI2SDAC', '');
   return self.commandRouter.executeOnPlugin('audio_interface', 'alsa_controller', 'saveAlsaOptions', stri);
- }, 4500);
+ }, 500);
  var volumeval = self.config.get('alsa_volumestart')
  if (volumeval != 'disabled') {
   setTimeout(function() {
@@ -1139,7 +1093,6 @@ ControllerBrutefir.prototype.setLoopbackoutput = function() {
    });
   }, 4500);
  }
- // retur
  return defer.promise;
 };
 

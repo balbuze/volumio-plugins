@@ -27,6 +27,7 @@ mkdir -m 777 /data/INTERNAL/brutefirfilters/target-curves
 echo "copying demo flters"
 sudo cp /data/plugins/audio_interface/brutefir/filters/* /data/INTERNAL/brutefirfilters/
 sudo cp /data/plugins/audio_interface/brutefir/target-curves/* /data/INTERNAL/brutefirfilters/target-curves/
+sudo cp /data/plugins/audio_interface/brutefir/filter-sources/* /data/INTERNAL/brutefirfilters/filter-sources/
 rm -Rf /data/plugins/audio_interface/brutefir/filters
 #required to end the plugin install
 echo "plugininstallend"

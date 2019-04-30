@@ -1,4 +1,4 @@
-April 22th 2019
+April 27th 2019
 
 
 #	DRC- Digital Room Correction for Volumio (previously Brutefir3)
@@ -24,7 +24,7 @@ It provides :
 The plugin is able to auto generate filter in few clicks, just using a impluse from REW. To do that, it uses [DRC](http://drc-fir.sourceforge.net/). It will be documented soon!
 
 
-To have a idea of what it is, have look here [brutefir plugin wiki](https://volumio.github.io/docs/Plugins_User_Manuals/brutefir/Drc_with_Volumio.html) 
+To have a idea of what it is, have look here [brutefir plugin wiki](https://volumio.github.io/docs/Plugins_User_Manuals/brutefir/Drc_with_Volumio.html)
 
 
 
@@ -34,7 +34,7 @@ Base scheme
 [volumio]--->[Loopback]--->[Brutefir]--->[output /DAC]
 
 
-## INSTALLATION WARNING 
+## INSTALLATION WARNING
 
 First, you must have a working configuration with volumio, the dac you want to use and the mixer properly set.
 
@@ -65,11 +65,11 @@ rm -Rf brutefir*
 
 ### 3. Using the plugin
 
-In webUI, enbable the plugin and wait about 20seconds.
+In webUI, enable the plugin and wait about 20seconds.
 
 ## What is working :
- 
-nearly everythings 
+
+nearly everythings
 
 
 ## What is not working :
@@ -80,6 +80,18 @@ nearly everythings
 
 
 ### 4. Last changes
+
+April 27th 2019
+
+- code cleaning + comments
+- text in UI
+- new demo filter + impulse
+
+
+April 26th 2019
+
+- more warnings in UI
+- new work on timers...
 
 April 22th 2019
 
@@ -171,7 +183,7 @@ Febuary, 5th 2019
 Febuary, 2nd 2019
 
 - merge left and right attenuation
-- timer adjustement (no idea if it could solve some startup prob...) 
+- timer adjustement (no idea if it could solve some startup prob...)
 
 December, 27 th 2018
 
@@ -250,7 +262,7 @@ November, 1st 2018
 - add button to wiki
 - better translation support
 - node_modules cleaning
- 
+
 31 th October
 
 - Add a button to download sweep files in /data/INTERNAL/brutefirfilters/sweep

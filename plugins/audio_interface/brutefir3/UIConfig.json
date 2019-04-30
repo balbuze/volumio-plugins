@@ -1,416 +1,413 @@
 {
-  "page": {
-    "label": "TRANSLATE.VOLUMIO_DSP"
-  },
-  "sections": [
-    {
-      "id": "advanced",
-      "element": "section",
-      "label": "TRANSLATE.SETTINGS",
-      "icon": "fa-cogs",
-      "onSave": {
-        "type": "plugin",
-        "endpoint": "audio_interface/brutefir",
-        "method": "saveBrutefirconfigAccount2"
-      },
-      "saveButton": {
-        "label": "TRANSLATE.APPLY",
-        "data": [
-          "attenuation",
-          "leftfilter",
-          "rightfilter",
-	  "filter_format",
-          "filter_size",
-          "smpl_rate",
-          "output_format"
-        ]
-      },
-      "content": [
-        {
-          "id": "attenuation",
-          "element": "select",
-          "doc": "TRANSLATE.DOC_LATT",
-          "label": "TRANSLATE.LINPUT_ATTENUATION",
-          "value": {
-            "value": "10",
-            "label": "10"
-          },
-          "options": [
-            {
-              "value": "0",
-              "label": "0"
-            },
-            {
-              "value": "2",
-              "label": "2"
-            },
-            {
-              "value": "4",
-              "label": "4"
-            },
-            {
-              "value": "6",
-              "label": "6"
-            },
-            {
-              "value": "8",
-              "label": "8"
-            },
-            {
-              "value": "10",
-              "label": "10"
-            },
-            {
-              "value": "12",
-              "label": "12"
-            },
-            {
-              "value": "14",
-              "label": "14"
-            },
-            {
-              "value": "16",
-              "label": "16"
-            },
-            {
-              "value": "18",
-              "label": "18"
-            },
-            {
-              "value": "20",
-              "label": "20"
-            },
-            {
-              "value": "22",
-              "label": "22"
-            }
-          ]
-        },
-        {
-          "id": "leftfilter",
-          "element": "select",
-          "doc": "TRANSLATE.DOC_LFILTER",
-          "label": "TRANSLATE.LEFT_FILTER",
-          "value": {
-            "value": "items",
-            "label": "dirac pulse"
-          },
-          "options": []
-        },
-        {
-          "id": "rightfilter",
-          "element": "select",
-          "doc": "TRANSLATE.DOC_RFILTER",
-          "label": "TRANSLATE.RIGHT_FILTER",
-          "value": {
-            "value": "items",
-            "label": "dirac pulse"
-          },
-          "options": []
-        },
-	{
-					"id": "filter_format",
-					"element": "select",
-					"doc": "filters format",
-					"label": "TRANSLATE.FILTER_FORMAT",
-					"value": {
-						"value": "text",
-						"label": "text"
-					},
-					"options": [
-						{
-							"value": "text",
-							"label": "text- 32/64 bits floats line (.txt) in rephase"
-						},
-						{
-							"value": "S16_LE",
-							"label": "S16_LE- 16 bits LPCM mono (.wav) in rePhase"
-						},
-						{
-							"value": "S24_LE",
-							"label": "S24_LE- 24 bits LPCM mono (.wav) in rePhase"
-						},
-						{
-							"value": "S32_LE",
-							"label": "S32_LE- 32 bits LPCM mono (.wav) in rePhase"
-						},
-						{
-							"value": "FLOAT_LE",
-							"label": "FLOAT_LE- 32 bits floating point (.pcm)"
-						},
-						{
-							"value": "FLOAT64_LE",
-							"label": "FLOAT64_LE- 64 bits IEEE-754 (.dbl) in rephase"
-						}
-					],
-					"visibleIf": {
-						"field": "enabled",
-						"value": true
-					}
-				},
-        {
-          "id": "filter_size",
-          "element": "select",
-          "doc": "TRANSLATE.DOC_FILTERSIZE",
-          "label": "TRANSLATE.FILTER_SIZE",
-          "value": {
-            "value": "8192",
-            "label": "8192"
-          },
-          "options": [
-            {
-              "value": "1024",
-              "label": "1024"
-            },
-            {
-              "value": "2048",
-              "label": "2048"
-            },
-            {
-              "value": "4096",
-              "label": "4096"
-            },
-            {
-              "value": "8192",
-              "label": "8192"
-            },
-            {
-              "value": "16384",
-              "label": "16384"
-            },
-            {
-              "value": "32768",
-              "label": "32768"
-            },
-            {
-              "value": "65536",
-              "label": "65536"
-            },
-            {
-              "value": "131072",
-              "label": "131072"
-            },
-            {
-              "value": "262144",
-              "label": "262144"
-            }
-          ]
-        },
-        {
-          "id": "smpl_rate",
-          "element": "select",
-          "doc": "sample rate",
-          "label": "TRANSLATE.SAMPLE_RATE",
-           "value": {
-            "value": "96000",
-            "label": "96kHz"
-          },
-          "options": [
-            {
-              "value": "44100",
-              "label": "44.1kHz"
-            },
-            {
-              "value": "48000",
-              "label": "48kHz"
-            },
-	    {
-              "value": "88200",
-              "label": "88.2kHz"
-            },
-            {
-              "value": "96000",
-              "label": "96kHz"
-            },
-{
-              "value": "176400",
-              "label": "176.4kHz"
-            },
-            {
-              "value": "192000",
-              "label": "192kHz"
-            }
-          ]
-        },
-        {
-          "id": "output_format",
-          "element": "select",
-          "doc": "output format",
-          "label": "TRANSLATE.OUTPUT_FORMAT",
-          "value": {
-            "value": "sitems",
-            "label": "sitems"
-          },
-          "options": [
-                     ]
-        }
-      ]
+    "page": {
+        "label": "TRANSLATE.VOLUMIO_DSP"
     },
-{
-      "id": "roomsettings",
-      "element": "section",
-      "label": "Room settings",
-      "icon": "fas fa-home",
-"onSave": {
-        "type": "plugin",
-        "endpoint": "audio_interface/brutefir",
-        "method": "saveBrutefirconfigroom"
-      },
- "saveButton": {
-        "label": "TRANSLATE.APPLY",
-        "data": [
-          "ldistance",
-          "rdistance"
-        ]
-      },
-      "content": [
+    "sections": [
         {
-		"id": "ldistance",
-		"element": "input",
-		"label": "left speaker distance in cm",
-		"doc":"Left speaker distance from listener in cm. Identical value with right = no effect",
-		"value": {
-        	    "value": "0",
-        	    "label": "0"
-          		}
-	},
-	{
-		"id": "rdistance",
-		"element": "input",
-		"label": "right speaker distance in cm",
-		"doc":"Right speaker distance from listener in cm. Identical value with left = no effect",
-		"value": {
-        	    "value": "0",
-        	    "label": "0"
-          		}
-	}
-		]
-},
-      {
-      "id": "filtercreat",
-      "element": "section",
-      "label": "TRANSLATE.FILTER_CREATION",
-      "icon": "fa-filter",
-"onSave": {
-        "type": "plugin",
-        "endpoint": "audio_interface/brutefir",
-        "method": "fileconvert"
-      },
- "saveButton": {
-        "label": "TRANSLATE.CREATE_FILTER",
-        "data": [
-	"filetoconvert",
-	"bk",
-	"drcconfig",
-	"outputfilename"
-        ]
-      },
-"content": [
-{
-          "id": "filetoconvert",
-          "element": "select",
-          "doc": "TRANSLATE.DOC_FILE_TO_CONVERT",
-          "label": "TRANSLATE.FILE_TO_CONVERT",
-          "value": {
-            "value": "fitems",
-            "label": "TRANSLATE.CHOOSE_A_FILE"
-          },
-          "options": []
-        },  
-{
-          "id": "bk",
-          "element": "select",
-          "doc": "TRANSLATE.DOC_TARGET_CURVE",
-          "label": "TRANSLATE.TARGET_CURVE",
-          "value": {
-            "value": "",
-            "label": "TRANSLATE.CHOOSE_A_FILE"
-          },
-          "options": []
-        }, 
-{
-          "id": "drcconfig",
-          "element": "select",
-          "doc": "TRANSLATE.DOC_DRCCONFIG",
-          "label": "TRANSLATE.DRCCONFIG",
-          "value": {
-            "value": "normal",
-            "label": "TRANSLATE.CHOOSE_A_FILE"
-          },
-          "options": [
-            {
-              "value": "soft",
-              "label": "soft"
+            "id": "advanced",
+            "element": "section",
+            "label": "TRANSLATE.SETTINGS",
+            "icon": "fa-cogs",
+            "onSave": {
+                "type": "plugin",
+                "endpoint": "audio_interface/brutefir",
+                "method": "saveBrutefirconfigAccount2"
             },
-            {
-              "value": "minimal",
-              "label": "minimal"
+            "saveButton": {
+                "label": "TRANSLATE.APPLY",
+                "data": [
+                    "attenuation",
+                    "leftfilter",
+                    "rightfilter",
+                    "filter_format",
+                    "filter_size",
+                    "smpl_rate",
+                    "output_format"
+                ]
             },
- 	    {
-              "value": "normal",
-              "label": "normal"
-            },
-	    {
-              "value": "erb",
-              "label": "erb"
-            },
-            {
-              "value": "strong",
-              "label": "strong"
-            },
-	    {
-              "value": "extreme",
-              "label": "extreme"
-            },
-            {
-              "value": "insane",
-              "label": "insane"
-            }
-          ]
+            "content": [
+                {
+                    "id": "attenuation",
+                    "element": "select",
+                    "doc": "TRANSLATE.DOC_LATT",
+                    "label": "TRANSLATE.LINPUT_ATTENUATION",
+                    "value": {
+                        "value": "10",
+                        "label": "10"
+                    },
+                    "options": [
+                        {
+                            "value": "0",
+                            "label": "0"
+                        },
+                        {
+                            "value": "2",
+                            "label": "2"
+                        },
+                        {
+                            "value": "4",
+                            "label": "4"
+                        },
+                        {
+                            "value": "6",
+                            "label": "6"
+                        },
+                        {
+                            "value": "8",
+                            "label": "8"
+                        },
+                        {
+                            "value": "10",
+                            "label": "10"
+                        },
+                        {
+                            "value": "12",
+                            "label": "12"
+                        },
+                        {
+                            "value": "14",
+                            "label": "14"
+                        },
+                        {
+                            "value": "16",
+                            "label": "16"
+                        },
+                        {
+                            "value": "18",
+                            "label": "18"
+                        },
+                        {
+                            "value": "20",
+                            "label": "20"
+                        },
+                        {
+                            "value": "22",
+                            "label": "22"
+                        }
+                    ]
+                },
+                {
+                    "id": "leftfilter",
+                    "element": "select",
+                    "doc": "TRANSLATE.DOC_LFILTER",
+                    "label": "TRANSLATE.LEFT_FILTER",
+                    "value": {
+                        "value": "items",
+                        "label": "dirac pulse"
+                    },
+                    "options": []
+                },
+                {
+                    "id": "rightfilter",
+                    "element": "select",
+                    "doc": "TRANSLATE.DOC_RFILTER",
+                    "label": "TRANSLATE.RIGHT_FILTER",
+                    "value": {
+                        "value": "items",
+                        "label": "dirac pulse"
+                    },
+                    "options": []
+                },
+                {
+                    "id": "filter_format",
+                    "element": "select",
+                    "doc": "filters format",
+                    "label": "TRANSLATE.FILTER_FORMAT",
+                    "value": {
+                        "value": "text",
+                        "label": "text"
+                    },
+                    "options": [
+                        {
+                            "value": "text",
+                            "label": "text- 32/64 bits floats line (.txt) in rephase"
+                        },
+                        {
+                            "value": "S16_LE",
+                            "label": "S16_LE- 16 bits LPCM mono (.wav) in rePhase"
+                        },
+                        {
+                            "value": "S24_LE",
+                            "label": "S24_LE- 24 bits LPCM mono (.wav) in rePhase"
+                        },
+                        {
+                            "value": "S32_LE",
+                            "label": "S32_LE- 32 bits LPCM mono (.wav) in rePhase"
+                        },
+                        {
+                            "value": "FLOAT_LE",
+                            "label": "FLOAT_LE- 32 bits floating point (.pcm)"
+                        },
+                        {
+                            "value": "FLOAT64_LE",
+                            "label": "FLOAT64_LE- 64 bits IEEE-754 (.dbl) in rephase"
+                        }
+                    ],
+                    "visibleIf": {
+                        "field": "enabled",
+                        "value": true
+                    }
+                },
+                {
+                    "id": "filter_size",
+                    "element": "select",
+                    "doc": "TRANSLATE.DOC_FILTERSIZE",
+                    "label": "TRANSLATE.FILTER_SIZE",
+                    "value": {
+                        "value": "8192",
+                        "label": "8192"
+                    },
+                    "options": [
+                        {
+                            "value": "1024",
+                            "label": "1024"
+                        },
+                        {
+                            "value": "2048",
+                            "label": "2048"
+                        },
+                        {
+                            "value": "4096",
+                            "label": "4096"
+                        },
+                        {
+                            "value": "8192",
+                            "label": "8192"
+                        },
+                        {
+                            "value": "16384",
+                            "label": "16384"
+                        },
+                        {
+                            "value": "32768",
+                            "label": "32768"
+                        },
+                        {
+                            "value": "65536",
+                            "label": "65536"
+                        },
+                        {
+                            "value": "131072",
+                            "label": "131072"
+                        },
+                        {
+                            "value": "262144",
+                            "label": "262144"
+                        }
+                    ]
+                },
+                {
+                    "id": "smpl_rate",
+                    "element": "select",
+                    "doc": "sample rate",
+                    "label": "TRANSLATE.SAMPLE_RATE",
+                    "value": {
+                        "value": "96000",
+                        "label": "96kHz"
+                    },
+                    "options": [
+                        {
+                            "value": "44100",
+                            "label": "44.1kHz"
+                        },
+                        {
+                            "value": "48000",
+                            "label": "48kHz"
+                        },
+                        {
+                            "value": "88200",
+                            "label": "88.2kHz"
+                        },
+                        {
+                            "value": "96000",
+                            "label": "96kHz"
+                        },
+                        {
+                            "value": "176400",
+                            "label": "176.4kHz"
+                        },
+                        {
+                            "value": "192000",
+                            "label": "192kHz"
+                        }
+                    ]
+                },
+                {
+                    "id": "output_format",
+                    "element": "select",
+                    "doc": "output format",
+                    "label": "TRANSLATE.OUTPUT_FORMAT",
+                    "value": {
+                        "value": "sitems",
+                        "label": "sitems"
+                    },
+                    "options": []
+                }
+            ]
         },
-	{
-          "id": "outputfilename",
-          "element": "input",
-          "doc": "TRANSLATE.DOC_OUTPUT_FILE_NAME",
-          "label": "TRANSLATE.OUTPUT_FILE_NAME",
-          "value": {
-            "value": "azerty",
-            "label": ""
-          },
-          "options": []
-        
-  	}
-]
-},
-	{
-      "id": "advanced",
-      "element": "section",
-      "label": "Tools",
-      "icon": "fa-wrench",
-      "content": [
-        
-	{
-          "id": "installtools",
-          "element": "button",
-          "label": "TRANSLATE.INSTALL_TOOLS",
-          "description": "TRANSLATE.DESC_INSTALL_TOOLS",
-          "onClick": {
-            "type": "plugin",
-            "endpoint": "audio_interface/brutefir",
-            "method": "installtools"
-          }
-	  },
-	{
-          "id": "wikilink",
-          "element": "button",
-          "label": "TRANSLATE.OPEN_WIKI",
-          "doc": "TRANSLATE.DOC_OPENW",
-          "onClick": {
-            "type": "openUrl",
-            "url": "https://volumio.github.io/docs/Plugins_User_Manuals/brutefir/Drc_with_Volumio.html"
-          }
+        {
+            "id": "roomsettings",
+            "element": "section",
+            "label": "Room settings",
+            "icon": "fas fa-home",
+            "onSave": {
+                "type": "plugin",
+                "endpoint": "audio_interface/brutefir",
+                "method": "saveBrutefirconfigroom"
+            },
+            "saveButton": {
+                "label": "TRANSLATE.APPLY",
+                "data": [
+                    "ldistance",
+                    "rdistance"
+                ]
+            },
+            "content": [
+                {
+                    "id": "ldistance",
+                    "element": "input",
+                    "label": "left speaker distance in cm",
+                    "doc": "Left speaker distance from listener in cm. Identical value with right = no effect",
+                    "value": {
+                        "value": "0",
+                        "label": "0"
+                    }
+                },
+                {
+                    "id": "rdistance",
+                    "element": "input",
+                    "label": "right speaker distance in cm",
+                    "doc": "Right speaker distance from listener in cm. Identical value with left = no effect",
+                    "value": {
+                        "value": "0",
+                        "label": "0"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "filtercreat",
+            "element": "section",
+            "label": "TRANSLATE.FILTER_CREATION",
+            "icon": "fa-filter",
+            "onSave": {
+                "type": "plugin",
+                "endpoint": "audio_interface/brutefir",
+                "method": "fileconvert"
+            },
+            "saveButton": {
+                "label": "TRANSLATE.CREATE_FILTER",
+                "data": [
+                    "filetoconvert",
+                    "bk",
+                    "drcconfig",
+                    "outputfilename"
+                ]
+            },
+            "content": [
+                {
+                    "id": "filetoconvert",
+                    "element": "select",
+                    "doc": "TRANSLATE.DOC_FILE_TO_CONVERT",
+                    "label": "TRANSLATE.FILE_TO_CONVERT",
+                    "value": {
+                        "value": "fitems",
+                        "label": "TRANSLATE.CHOOSE_A_FILE"
+                    },
+                    "options": []
+                },
+                {
+                    "id": "bk",
+                    "element": "select",
+                    "doc": "TRANSLATE.DOC_TARGET_CURVE",
+                    "label": "TRANSLATE.TARGET_CURVE",
+                    "value": {
+                        "value": "",
+                        "label": "TRANSLATE.CHOOSE_A_FILE"
+                    },
+                    "options": []
+                },
+                {
+                    "id": "drcconfig",
+                    "element": "select",
+                    "doc": "TRANSLATE.DOC_DRCCONFIG",
+                    "label": "TRANSLATE.DRCCONFIG",
+                    "value": {
+                        "value": "normal",
+                        "label": "TRANSLATE.CHOOSE_A_FILE"
+                    },
+                    "options": [
+                        {
+                            "value": "soft",
+                            "label": "soft"
+                        },
+                        {
+                            "value": "minimal",
+                            "label": "minimal"
+                        },
+                        {
+                            "value": "normal",
+                            "label": "normal"
+                        },
+                        {
+                            "value": "erb",
+                            "label": "erb"
+                        },
+                        {
+                            "value": "strong",
+                            "label": "strong"
+                        },
+                        {
+                            "value": "extreme",
+                            "label": "extreme"
+                        },
+                        {
+                            "value": "insane",
+                            "label": "insane"
+                        }
+                    ]
+                },
+                {
+                    "id": "outputfilename",
+                    "element": "input",
+                    "doc": "TRANSLATE.DOC_OUTPUT_FILE_NAME",
+                    "label": "TRANSLATE.OUTPUT_FILE_NAME",
+                    "value": {
+                        "value": "azerty",
+                        "label": ""
+                    },
+                    "options": []
+                }
+            ]
+        },
+        {
+            "id": "advanced",
+            "element": "section",
+            "label": "Tools",
+            "icon": "fa-wrench",
+            "content": [
+                {
+                    "id": "installtools",
+                    "element": "button",
+                    "label": "TRANSLATE.INSTALL_TOOLS",
+                    "description": "TRANSLATE.DESC_INSTALL_TOOLS",
+                    "onClick": {
+                        "type": "plugin",
+                        "endpoint": "audio_interface/brutefir",
+                        "method": "installtools"
+                    }
+                },
+                {
+                    "id": "wikilink",
+                    "element": "button",
+                    "label": "TRANSLATE.OPEN_WIKI",
+                    "doc": "TRANSLATE.DOC_OPENW",
+                    "onClick": {
+                        "type": "openUrl",
+                        "url": "https://volumio.github.io/docs/Plugins_User_Manuals/brutefir/Drc_with_Volumio.html"
+                    }
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

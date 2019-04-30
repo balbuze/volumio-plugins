@@ -1,64 +1,189 @@
-#brutefir config for volumio - other variable to be added later for setting (filter lenght, float_bits output etc)
-    sampling_rate: ${smpl_rate};
-    filter_length: ${filter_size},${numb_part}; # number of taps N,number of partition P = N*P= filter length
-    overflow_warnings: true;
-    show_progress: false;
-    float_bits: 64;
-    powersave: true;
-    convolver_config: "/data/configuration/audio_interface/brutefir/brutefir_convolver"; # location of convolver config file
-logic:
- "cli" { port: 3002;};
-#"cli"  { port: "/dev/ttyS1";};
-#"echo" on ;
-input "l_in", "r_in" {
-            device: "alsa" {device: "hw:${input_device}";};
-            sample: "s32_le";   # sample format
-            channels: 2;            # number of open channels / which to use
-delay: ${delay};
-    };
+##############################
+## DEFAULT GENERAL SETTINGS ##
+##############################
 
+# config_file: "";								# <STRING: default location of main configuration file>;
 
-coeff "filter_1" {
-filename: "${leftfilter}";
-format: "${filter_format1}";
-${skip_1}
-#format: "text";
-attenuation: ${lattenuation};
-};
+float_bits: 64; 								# <NUMBER: internal floating point resolution, either 32 or 64>;
+sampling_rate: ${smpl_rate};					# <NUMBER: sampling rate in Hz>;
+filter_length: ${filter_size},${numb_part};   	# <NUMBER: length in samples of the (sub)filters>[,<NUMBER: number of subfilters per filter>];	
+												#   To partition a 65536 tap filter in 16 parts, you write filter_length: 4096,16. Partitioned filters can be used to improve performance and reduce I/O-delay.
+sdf_length: 63,9;								# <NUMBER: sub-sample delay filter half length in samples>[, <NUMBER: kaiser window beta>];		
+												#   Comment it or RTFM. Maybe yu can try 63,9
 
-filter "l_drc" {
-from_inputs: "l_in";
-#from_filters: "filter_1";
-to_outputs: "l_out"/0.0;
-coeff: "filter_1";
-process: -1;
-};
+convolver_config: "/tmp/brutefir_convolver";	# <STRING: file to store FFTW wisdom in>;
 
-coeff "filter_2" {
-filename: "${rightfilter}";
-format: "${filter_format2}";
-${skip_2}
-#format: "text";
-attenuation: ${rattenuation};
-};
+monitor_rate: true;								# <BOOLEAN: monitor sample rate, and abort if it changes>;
+safety_limit: 0; 								# <NUMBER: if non-zero max dB in output before aborting>;
+overflow_warnings: false; 						# <BOOLEAN: echo overflow warnings to stderr>;													
+												#   If overflow occurs, it means that the filter is amplifying too much, either through its coefficients or through input and output attenuation.
+show_progress: false;							# <BOOLEAN: echo progress to stderr>;
 
-filter "r_drc" {
-from_inputs: "r_in";
-to_outputs: "r_out"/0.0;
-coeff: "filter_2";
-#delay: 0,5;
-process: -1;
-};
+max_dither_table_size: -1; 						# <NUMBER: maximum size in bytes of pre-calculated dither>;										
+												#    It should rather not be less than one megabyte though. If it is set to zero or negative, the program will itself choose a size.
+lock_memory: true; 								# <BOOLEAN: try to lock memory if realtime prio is set>;										
+												#    Link to realtime performance. Need to run the program as root. The best thing to do is to have a system with no swap and avoid locking the memory.
+allow_poll_mode: false; 						# <BOOLEAN: allow input poll mode>;																
+												#    Set allow_poll_mode to false, BruteFIR will exit with an error if input poll mode is required
 
-   output "l_out","r_out" {
-            device: "alsa" {device: "${output_device}"; ignore_xrun: true; };
-#         device: "file" {path: "/dev/stdout";};
-         sample: "${output_format}";   # sample format
-# sample: "S24_3LE";
-
-            channels: 2;        # number of open channels / which to use
-#	delay: 5,0;
- #	maxdelay: -1;
-	dither: false;
-    };
+powersave: true; 								# <BOOLEAN or NUMBER: pause filtering when input is zero>;										
+												#    The reason for having it optional is that one may want to make performance tests. if a value is specified instead of the boolean (for example powersave: -80;), that value is interpreted as the lowest level in dB the input signal can be (Usefull for analog inputs)
+benchmark: false; 								# <BOOLEAN: start in benchmark mode (can only be used in main config file)>;
  
+# modules_path: "";								# <STRING: extra path where to find BruteFIR modules>;											
+												#    The value in the created default configuration file will be ".", that is the current working directory.
+logic: "cli" { port: 3002; },					# <STRING: logic module name> { <logic module parameters> }[, ...];
+	   "eq" {
+			{
+				coeff: "equalizer","dblBuffer";  
+				bands: 31, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000;	#bands: "ISO octave";
+				magnitude:  31/0.0, 63/0.0, 125/0.0, 250/0.0, 500/0.0, 1000/0.0, 2000/0.0, 4000/0.0, 8000/0.0, 16000/0.0;
+			};
+		};
+		
+coeff "equalizer" {
+        filename: "dirac pulse";
+        blocks: 4;
+        shared_mem: true;
+	
+};
+coeff "dblBuffer" {								# Double buffer on Equaliser avoid glichs. Wait for eqlizer to be calculated before applicated.
+        filename: "dirac pulse";
+        blocks: 4;
+        shared_mem: true;
+	
+};
+
+####################
+## COEFF DEFAULTS ##
+####################
+
+coeff  "right_coeff" {						  	# <STRING: name | NUMBER: index>
+	filename: "${rightfilter}";					# <STRING: filename>; | <NUMBER: shmid>/<NUMBER: offset>/<NUMBER: blocks>[,...];
+	format: "${filter_format2}"; 				# <STRING: sample format string | "text" | "processed">; 
+	attenuation: ${rattenuation}; 				# <NUMBER: attenuation in dB>;
+	blocks: -1; 								# <NUMBER: length in blocks>;
+	${skip_2} 									# <NUMBER: bytes to skip in beginning of file>;
+	shared_mem: false; 							# <BOOLEAN: allocate in shared mem>
+												#     Some modules may require that, such as the equalization module.
+}; 
+coeff  "left_coeff" {						  	# <STRING: name | NUMBER: index>
+	filename: "${leftfilter}";					# <STRING: filename>; | <NUMBER: shmid>/<NUMBER: offset>/<NUMBER: blocks>[,...];
+	format: "${filter_format1}"; 				# <STRING: sample format string | "text" | "processed">; 
+	attenuation: ${lattenuation}; 				# <NUMBER: attenuation in dB>;
+	blocks: -1; 								# <NUMBER: length in blocks>;
+	${skip_1} 									# <NUMBER: bytes to skip in beginning of file>;
+	shared_mem: false; 							# <BOOLEAN: allocate in shared mem>
+												#     Some modules may require that, such as the equalization module.
+}; 
+ 
+####################
+## INPUT DEFAULTS ##
+####################
+
+input "right", "left" {							# <STRING: name | NUMBER: index>[, ...]
+    device: "alsa" { 							# <STRING: I/O module name> { <I/O module settings> };
+		device: "hw:${input_device}"; 			# 	 !! RTFM !!
+		ignore_xrun: false;						#    "alsa" { device: "hw"; }
+	}; 											#    "file" { path: "/dev/stdin"; }
+												#    "jack" { ports: "alsa_pcm:capture_1", "alsa_pcm:capture_2"; }
+												#    "oss" { device: "/dev/dsp"; }
+    sample: "s32_le"; 							# <STRING: sample format>;
+    channels: 2/0,1; 							# <NUMBER: open channels>[/<NUMBER: channel index>[, ...]];
+												#     number of open channels / which to use
+	mapping: 0,1; 								# <NUMBER: channel index>[, ...];
+	
+	delay: ${delay}; 							# <NUMBER: delay in samples>[, ...];
+	subdelay: -100;								# <NUMBER: additional delay in 1/100th samples (valid range -99 - 99)>[, ...];
+	maxdelay: -1; 								# <NUMBER: maximum delay for dynamic changes>;
+	individual_maxdelay: -1,-1; 				# <NUMBER: maximum delay for dynamic changes>[, ...];
+	
+	mute: false, false 							# <BOOLEAN: mute channel>[, ...];
+};
+
+#####################
+## OUTPUT DEFAULTS ##
+#####################
+
+output "right", "left" {						# <STRING: name | NUMBER: index>[, ...]
+    device: "alsa" { 							# <STRING: I/O module name> { <I/O module settings> };
+		device: "hw:${output_device}"; 			# 	 !! RTFM !!
+		ignore_xrun: true;						#    "alsa" { device: "hw"; }
+	}; 											#    "file" { path: "/dev/stdin"; }
+												#    "jack" { ports: "alsa_pcm:capture_1", "alsa_pcm:capture_2"; }
+												#    "oss" { device: "/dev/dsp"; }
+    sample: "${output_format}"; 				# <STRING: sample format>;
+    channels: 2/0,1; 							# <NUMBER: open channels>[/<NUMBER: channel index>[, ...]];
+												#     number of open channels / which to use
+	mapping: 0,1; 								# <NUMBER: channel index>[, ...];
+	
+	delay: 0,0; 								# <NUMBER: delay in samples>[, ...];
+	subdelay: -100;								# <NUMBER: additional delay in 1/100th samples (valid range -99 - 99)>[, ...];
+	maxdelay: -1; 								# <NUMBER: maximum delay for dynamic changes>;
+	individual_maxdelay: -1,-1; 				# <NUMBER: maximum delay for dynamic changes>[, ...];
+	
+	mute: false, false 							# <BOOLEAN: mute channel>[, ...];
+	
+	dither: true; 								# <BOOLEAN: apply dither>;
+	merge: false;								# <BOOLEAN: merge discontinuities at coeff change>;
+};
+ 
+#####################
+## FILTER DEFAULTS ##
+#####################
+ 
+filter "filterRight" {							# <STRING: name | NUMBER: index>
+    from_inputs: "right"//;						# <STRING: name | NUMBER: index>[/<NUMBER:attenuation in dB>][/<NUMBER:multiplier>][, ...];
+												#    The writing "channel 1"/6/-1 means that channel 1 is attenuated 6 dB and the polarity is changed (multiplication with -1)
+    # from_filters: ;							# <same syntax as from_inputs field>;
+    # to_outputs: "right"//;					# <same syntax as from_inputs field>;
+    to_filters: "filterRightEqualizer";				# <STRING: name | NUMBER: index>[, ...];
+	
+    process: 1;									# <NUMBER: process index>;
+												#    (-1 means auto)
+	coeff: "right_coeff";						# <STRING: name | NUMBER: index>;
+	delay: 0;									# <NUMBER: pre-delay in blocks>;
+	crossfade: false;							# <BOOLEAN: cross-fade when coefficient is changed>;
+}; 
+
+filter "filterRightEqualizer" {						# <STRING: name | NUMBER: index>
+    # from_inputs: "right"// ;					# <STRING: name | NUMBER: index>[/<NUMBER:attenuation in dB>][/<NUMBER:multiplier>][, ...];
+												#    The writing "channel 1"/6/-1 means that channel 1 is attenuated 6 dB and the polarity is changed (multiplication with -1)
+    from_filters: "filterRight";				# <same syntax as from_inputs field>;
+    to_outputs: "right"//;						# <same syntax as from_inputs field>;
+    # to_filters: ;								# <STRING: name | NUMBER: index>[, ...];
+	
+    process: 3;									# <NUMBER: process index>;
+												#    (-1 means auto)
+	coeff: "equalizer";							# <STRING: name | NUMBER: index>;
+	delay: 0;									# <NUMBER: pre-delay in blocks>;
+	crossfade: false;							# <BOOLEAN: cross-fade when coefficient is changed>;
+}; 
+
+filter "filterLeft" {							# <STRING: name | NUMBER: index>
+    from_inputs: "left"//;						# <STRING: name | NUMBER: index>[/<NUMBER:attenuation in dB>][/<NUMBER:multiplier>][, ...];
+												#    The writing "channel 1"/6/-1 means that channel 1 is attenuated 6 dB and the polarity is changed (multiplication with -1)
+    # from_filters: ;							# <same syntax as from_inputs field>;
+    # to_outputs: "left"//;					# <same syntax as from_inputs field>;
+    to_filters: "filterLeftEqualizer";				# <STRING: name | NUMBER: index>[, ...];
+	
+    process: 0;									# <NUMBER: process index>;
+												#    (-1 means auto)
+	coeff: "left_coeff";						# <STRING: name | NUMBER: index>;
+	delay: 0;									# <NUMBER: pre-delay in blocks>;
+	crossfade: false;							# <BOOLEAN: cross-fade when coefficient is changed>;
+}; 
+
+filter "filterLeftEqualizer" {						# <STRING: name | NUMBER: index>
+    # from_inputs: "left"// ;					# <STRING: name | NUMBER: index>[/<NUMBER:attenuation in dB>][/<NUMBER:multiplier>][, ...];
+												#    The writing "channel 1"/6/-1 means that channel 1 is attenuated 6 dB and the polarity is changed (multiplication with -1)
+    from_filters: "filterLeft";				# <same syntax as from_inputs field>;
+    to_outputs: "left"//;						# <same syntax as from_inputs field>;
+    # to_filters: ;								# <STRING: name | NUMBER: index>[, ...];
+	
+    process: 2;									# <NUMBER: process index>;
+												#    (-1 means auto)
+	coeff: "equalizer";							# <STRING: name | NUMBER: index>;
+	delay: 0;									# <NUMBER: pre-delay in blocks>;
+	crossfade: false;							# <BOOLEAN: cross-fade when coefficient is changed>;
+}; 

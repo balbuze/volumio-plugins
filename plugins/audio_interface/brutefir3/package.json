@@ -1,6 +1,6 @@
 {
   "name": "brutefir",
-  "version": "1.0.3",
+  "version": "3.0.0",
   "description": "DRC-Digital Room Correction for Volumio2",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   "author": "Balbuze",
   "license": "GPL 3.0",
   "volumio_info": {
-    "prettyName": "DRC for Volumio",
+    "prettyName": "Brutefir for Volumio",
     "plugin_type": "audio_interface",
     "icon": "fa-sliders fa-rotate-90"
   },

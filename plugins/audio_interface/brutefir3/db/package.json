@@ -1,6 +1,6 @@
 {
   "name": "brutefir",
-  "version": "0.9.3",
+  "version": "3.0.0",
   "description": "DRC-Digital Room Correction for Volumio2",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "fs-extra": "^4.0.2",
-        "child_process": "",
+    "child_process": "",
     "kew": "",
     "v-conf": ""
   }

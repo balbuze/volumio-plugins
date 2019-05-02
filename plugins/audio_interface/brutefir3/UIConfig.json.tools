@@ -11,7 +11,7 @@
             "onSave": {
                 "type": "plugin",
                 "endpoint": "audio_interface/brutefir",
-                "method": "saveBrutefirconfigAccount2"
+                "method": "saveBruteFirConfigAccount2"
             },
             "saveButton": {
                 "label": "TRANSLATE.APPLY",
@@ -253,7 +253,7 @@
             "onSave": {
                 "type": "plugin",
                 "endpoint": "audio_interface/brutefir",
-                "method": "saveBrutefirconfigroom"
+                "method": "saveBruteFirConfigRoom"
             },
             "saveButton": {
                 "label": "TRANSLATE.APPLY",
@@ -293,7 +293,7 @@
             "onSave": {
                 "type": "plugin",
                 "endpoint": "audio_interface/brutefir",
-                "method": "fileconvert"
+                "method": "fileConvert"
             },
             "saveButton": {
                 "label": "TRANSLATE.CREATE_FILTER",
@@ -394,14 +394,14 @@
                     "value": false
                 },
                 {
-                    "id": "playleftsweepfile",
+                    "id": "playLeftSweepFile",
                     "element": "button",
                     "label": "TRANSLATE.PLAY_L_SWEEP",
                     "description": "TRANSLATE.DESC_PLAY_L_SWEEP",
                     "onClick": {
                         "type": "plugin",
                         "endpoint": "audio_interface/brutefir",
-                        "method": "playleftsweepfile"
+                        "method": "playLeftSweepFile"
                     },
                     "visibleIf": {
                         "field": "sweep",
@@ -409,14 +409,14 @@
                     }
                 },
                 {
-                    "id": "playrightsweepfile",
+                    "id": "playRightSweepFile",
                     "element": "button",
                     "label": "TRANSLATE.PLAY_R_SWEEP",
                     "description": "TRANSLATE.DESC_PLAY_R_SWEEP",
                     "onClick": {
                         "type": "plugin",
                         "endpoint": "audio_interface/brutefir",
-                        "method": "playrightsweepfile"
+                        "method": "playRightSweepFile"
                     },
                     "visibleIf": {
                         "field": "sweep",
@@ -424,14 +424,14 @@
                     }
                 },
                 {
-                    "id": "playbothsweepfile",
+                    "id": "playBothSweepFile",
                     "element": "button",
                     "label": "TRANSLATE.PLAY_BOTH_CHANNEL_SWEEP",
                     "description": "TRANSLATE.DESC_PLAY_BOTH_CHANNEL_SWEEP",
                     "onClick": {
                         "type": "plugin",
                         "endpoint": "audio_interface/brutefir",
-                        "method": "playbothsweepfile"
+                        "method": "playBothSweepFile"
                     },
                     "visibleIf": {
                         "field": "sweep",
@@ -439,14 +439,14 @@
                     }
                 },
                 {
-                    "id": "stopaplay",
+                    "id": "stopAplay",
                     "element": "button",
                     "label": "Stop to play",
                     "description": "Stop to play",
                     "onClick": {
                         "type": "plugin",
                         "endpoint": "audio_interface/brutefir",
-                        "method": "stopaplay"
+                        "method": "stopAplay"
                     },
                     "visibleIf": {
                         "field": "sweep",
@@ -461,14 +461,14 @@
                     "value": false
                 },
                 {
-                    "id": "playleftpinkfile",
+                    "id": "playLeftPinkFile",
                     "element": "button",
                     "label": "TRANSLATE.PLAY_L_PINK",
                     "description": "TRANSLATE.DESC_PLAY_L_PINK",
                     "onClick": {
                         "type": "plugin",
                         "endpoint": "audio_interface/brutefir",
-                        "method": "playleftpinkfile"
+                        "method": "playLeftPinkFile"
                     },
                     "visibleIf": {
                         "field": "pink",
@@ -476,14 +476,14 @@
                     }
                 },
                 {
-                    "id": "playrightpinkfile",
+                    "id": "playRightPinkFile",
                     "element": "button",
                     "label": "TRANSLATE.PLAY_R_PINK",
                     "description": "TRANSLATE.DESC_PLAY_R_PINK",
                     "onClick": {
                         "type": "plugin",
                         "endpoint": "audio_interface/brutefir",
-                        "method": "playrightpinkfile"
+                        "method": "playRightPinkFile"
                     },
                     "visibleIf": {
                         "field": "pink",
@@ -498,7 +498,7 @@
                     "onClick": {
                         "type": "plugin",
                         "endpoint": "audio_interface/brutefir",
-                        "method": "playbothpinkfile"
+                        "method": "playBothPinkFile"
                     },
                     "visibleIf": {
                         "field": "pink",
@@ -506,14 +506,14 @@
                     }
                 },
                 {
-                    "id": "stopaplay",
+                    "id": "stopAplay",
                     "element": "button",
                     "label": "Stop to play",
                     "description": "Stop to play",
                     "onClick": {
                         "type": "plugin",
                         "endpoint": "audio_interface/brutefir",
-                        "method": "stopaplay"
+                        "method": "stopAplay"
                     },
                     "visibleIf": {
                         "field": "pink",
@@ -521,14 +521,14 @@
                     }
                 },
                 {
-                    "id": "removetools",
+                    "id": "removeTools",
                     "element": "button",
                     "label": "TRANSLATE.REMOVE_TOOLS",
                     "description": "TRANSLATE.DESC_REMOVE_TOOLS",
                     "onClick": {
                         "type": "plugin",
                         "endpoint": "audio_interface/brutefir",
-                        "method": "removetools"
+                        "method": "removeTools"
                     }
                 },
                 {

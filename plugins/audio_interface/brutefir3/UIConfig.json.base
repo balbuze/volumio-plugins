@@ -11,7 +11,7 @@
             "onSave": {
                 "type": "plugin",
                 "endpoint": "audio_interface/brutefir",
-                "method": "saveBrutefirconfigAccount2"
+                "method": "saveBruteFirConfigAccount2"
             },
             "saveButton": {
                 "label": "TRANSLATE.APPLY",
@@ -253,7 +253,7 @@
             "onSave": {
                 "type": "plugin",
                 "endpoint": "audio_interface/brutefir",
-                "method": "saveBrutefirconfigroom"
+                "method": "saveBruteFirConfigRoom"
             },
             "saveButton": {
                 "label": "TRANSLATE.APPLY",
@@ -293,7 +293,7 @@
             "onSave": {
                 "type": "plugin",
                 "endpoint": "audio_interface/brutefir",
-                "method": "fileconvert"
+                "method": "fileConvert"
             },
             "saveButton": {
                 "label": "TRANSLATE.CREATE_FILTER",
@@ -394,7 +394,7 @@
                     "onClick": {
                         "type": "plugin",
                         "endpoint": "audio_interface/brutefir",
-                        "method": "installtools"
+                        "method": "installTools"
                     }
                 },
                 {

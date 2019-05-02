@@ -81,6 +81,10 @@ nearly everythings
 
 ### 4. Last changes
 
+April 30th 2019
+
+- small change in timer....
+
 April 27th 2019
 
 - code cleaning + comments

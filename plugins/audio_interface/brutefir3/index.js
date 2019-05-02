@@ -65,12 +65,6 @@ ControllerBrutefir.prototype.getConfigurationFiles = function() {
     return ['config.json'];
 };
 
-ControllerBrutefir.prototype.getAdditionalConf = function(type, controller, data) {
-    var self = this;
-
-    return self.commandRouter.executeOnPlugin(type, controller, 'getConfigParam', data);
-};
-
 ControllerBrutefir.prototype.getConf = function(varName) {
     var self = this;
 };
@@ -592,6 +586,12 @@ ControllerBrutefir.prototype.createBruteFirFile = function() {
     }
 
     return defer.promise;
+};
+
+ControllerBrutefir.prototype.getAdditionalConf = function(type, controller, data) {
+    var self = this;
+
+    return self.commandRouter.executeOnPlugin(type, controller, 'getConfigParam', data);
 };
 
 /*

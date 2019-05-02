@@ -116,7 +116,7 @@ April 11th 2019
 
 April 10th 2019
 
-- add drcconfig
+- add drcConfig
 
 April 7th 2019
 

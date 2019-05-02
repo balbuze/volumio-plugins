@@ -5,8 +5,8 @@
 # config_file: "";								# <STRING: default location of main configuration file>;
 
 float_bits: 64; 								# <NUMBER: internal floating point resolution, either 32 or 64>;
-sampling_rate: ${smpl_rate};					# <NUMBER: sampling rate in Hz>;
-filter_length: ${filter_size},${numb_part};   	# <NUMBER: length in samples of the (sub)filters>[,<NUMBER: number of subfilters per filter>];	
+sampling_rate: ${sampleRate};					# <NUMBER: sampling rate in Hz>;
+filter_length: ${filterSize},${numb_part};   	# <NUMBER: length in samples of the (sub)filters>[,<NUMBER: number of subfilters per filter>];	
 												#   To partition a 65536 tap filter in 16 parts, you write filter_length: 4096,16. Partitioned filters can be used to improve performance and reduce I/O-delay.
 sdf_length: 63,9;								# <NUMBER: sub-sample delay filter half length in samples>[, <NUMBER: kaiser window beta>];		
 												#   Comment it or RTFM. Maybe yu can try 63,9
@@ -59,7 +59,7 @@ coeff "dblBuffer" {								# Double buffer on Equaliser avoid glichs. Wait for e
 ####################
 
 coeff  "right_coeff" {						  	# <STRING: name | NUMBER: index>
-	filename: "${rightfilter}";					# <STRING: filename>; | <NUMBER: shmid>/<NUMBER: offset>/<NUMBER: blocks>[,...];
+	filename: "${rightFilter}";					# <STRING: filename>; | <NUMBER: shmid>/<NUMBER: offset>/<NUMBER: blocks>[,...];
 	format: "${filter_format2}"; 				# <STRING: sample format string | "text" | "processed">; 
 	attenuation: ${rattenuation}; 				# <NUMBER: attenuation in dB>;
 	blocks: -1; 								# <NUMBER: length in blocks>;
@@ -68,7 +68,7 @@ coeff  "right_coeff" {						  	# <STRING: name | NUMBER: index>
 												#     Some modules may require that, such as the equalization module.
 }; 
 coeff  "left_coeff" {						  	# <STRING: name | NUMBER: index>
-	filename: "${leftfilter}";					# <STRING: filename>; | <NUMBER: shmid>/<NUMBER: offset>/<NUMBER: blocks>[,...];
+	filename: "${leftFilter}";					# <STRING: filename>; | <NUMBER: shmid>/<NUMBER: offset>/<NUMBER: blocks>[,...];
 	format: "${filter_format1}"; 				# <STRING: sample format string | "text" | "processed">; 
 	attenuation: ${lattenuation}; 				# <NUMBER: attenuation in dB>;
 	blocks: -1; 								# <NUMBER: length in blocks>;
@@ -112,7 +112,7 @@ output "right", "left" {						# <STRING: name | NUMBER: index>[, ...]
 	}; 											#    "file" { path: "/dev/stdin"; }
 												#    "jack" { ports: "alsa_pcm:capture_1", "alsa_pcm:capture_2"; }
 												#    "oss" { device: "/dev/dsp"; }
-    sample: "${output_format}"; 				# <STRING: sample format>;
+    sample: "${outputFormat}"; 				    # <STRING: sample format>;
     channels: 2/0,1; 							# <NUMBER: open channels>[/<NUMBER: channel index>[, ...]];
 												#     number of open channels / which to use
 	mapping: 0,1; 								# <NUMBER: channel index>[, ...];
@@ -137,7 +137,7 @@ filter "filterRight" {							# <STRING: name | NUMBER: index>
 												#    The writing "channel 1"/6/-1 means that channel 1 is attenuated 6 dB and the polarity is changed (multiplication with -1)
     # from_filters: ;							# <same syntax as from_inputs field>;
     # to_outputs: "right"//;					# <same syntax as from_inputs field>;
-    to_filters: "filterRightEqualizer";				# <STRING: name | NUMBER: index>[, ...];
+    to_filters: "filterRightEqualizer";			# <STRING: name | NUMBER: index>[, ...];
 	
     process: 1;									# <NUMBER: process index>;
 												#    (-1 means auto)
@@ -146,7 +146,7 @@ filter "filterRight" {							# <STRING: name | NUMBER: index>
 	crossfade: false;							# <BOOLEAN: cross-fade when coefficient is changed>;
 }; 
 
-filter "filterRightEqualizer" {						# <STRING: name | NUMBER: index>
+filter "filterRightEqualizer" {					# <STRING: name | NUMBER: index>
     # from_inputs: "right"// ;					# <STRING: name | NUMBER: index>[/<NUMBER:attenuation in dB>][/<NUMBER:multiplier>][, ...];
 												#    The writing "channel 1"/6/-1 means that channel 1 is attenuated 6 dB and the polarity is changed (multiplication with -1)
     from_filters: "filterRight";				# <same syntax as from_inputs field>;
@@ -164,8 +164,8 @@ filter "filterLeft" {							# <STRING: name | NUMBER: index>
     from_inputs: "left"//;						# <STRING: name | NUMBER: index>[/<NUMBER:attenuation in dB>][/<NUMBER:multiplier>][, ...];
 												#    The writing "channel 1"/6/-1 means that channel 1 is attenuated 6 dB and the polarity is changed (multiplication with -1)
     # from_filters: ;							# <same syntax as from_inputs field>;
-    # to_outputs: "left"//;					# <same syntax as from_inputs field>;
-    to_filters: "filterLeftEqualizer";				# <STRING: name | NUMBER: index>[, ...];
+    # to_outputs: "left"//;					    # <same syntax as from_inputs field>;
+    to_filters: "filterLeftEqualizer";			# <STRING: name | NUMBER: index>[, ...];
 	
     process: 0;									# <NUMBER: process index>;
 												#    (-1 means auto)
@@ -174,10 +174,10 @@ filter "filterLeft" {							# <STRING: name | NUMBER: index>
 	crossfade: false;							# <BOOLEAN: cross-fade when coefficient is changed>;
 }; 
 
-filter "filterLeftEqualizer" {						# <STRING: name | NUMBER: index>
+filter "filterLeftEqualizer" {					# <STRING: name | NUMBER: index>
     # from_inputs: "left"// ;					# <STRING: name | NUMBER: index>[/<NUMBER:attenuation in dB>][/<NUMBER:multiplier>][, ...];
 												#    The writing "channel 1"/6/-1 means that channel 1 is attenuated 6 dB and the polarity is changed (multiplication with -1)
-    from_filters: "filterLeft";				# <same syntax as from_inputs field>;
+    from_filters: "filterLeft";				    # <same syntax as from_inputs field>;
     to_outputs: "left"//;						# <same syntax as from_inputs field>;
     # to_filters: ;								# <STRING: name | NUMBER: index>[, ...];
 	

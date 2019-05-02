@@ -11,18 +11,18 @@
             "onSave": {
                 "type": "plugin",
                 "endpoint": "audio_interface/brutefir",
-                "method": "saveBruteFirConfigAccount2"
+                "method": "applyBruteFirConfiguration"
             },
             "saveButton": {
                 "label": "TRANSLATE.APPLY",
                 "data": [
                     "attenuation",
-                    "leftfilter",
-                    "rightfilter",
-                    "filter_format",
-                    "filter_size",
-                    "smpl_rate",
-                    "output_format"
+                    "leftFilter",
+                    "rightFilter",
+                    "filterFormat",
+                    "filterSize",
+                    "sampleRate",
+                    "outputFormat"
                 ]
             },
             "content": [
@@ -87,7 +87,7 @@
                     ]
                 },
                 {
-                    "id": "leftfilter",
+                    "id": "leftFilter",
                     "element": "select",
                     "doc": "TRANSLATE.DOC_LFILTER",
                     "label": "TRANSLATE.LEFT_FILTER",
@@ -98,7 +98,7 @@
                     "options": []
                 },
                 {
-                    "id": "rightfilter",
+                    "id": "rightFilter",
                     "element": "select",
                     "doc": "TRANSLATE.DOC_RFILTER",
                     "label": "TRANSLATE.RIGHT_FILTER",
@@ -109,7 +109,7 @@
                     "options": []
                 },
                 {
-                    "id": "filter_format",
+                    "id": "filterFormat",
                     "element": "select",
                     "doc": "filters format",
                     "label": "TRANSLATE.FILTER_FORMAT",
@@ -149,7 +149,7 @@
                     }
                 },
                 {
-                    "id": "filter_size",
+                    "id": "filterSize",
                     "element": "select",
                     "doc": "TRANSLATE.DOC_FILTERSIZE",
                     "label": "TRANSLATE.FILTER_SIZE",
@@ -197,7 +197,7 @@
                     ]
                 },
                 {
-                    "id": "smpl_rate",
+                    "id": "sampleRate",
                     "element": "select",
                     "doc": "sample rate",
                     "label": "TRANSLATE.SAMPLE_RATE",
@@ -233,7 +233,7 @@
                     ]
                 },
                 {
-                    "id": "output_format",
+                    "id": "outputFormat",
                     "element": "select",
                     "doc": "output format",
                     "label": "TRANSLATE.OUTPUT_FORMAT",
@@ -253,18 +253,18 @@
             "onSave": {
                 "type": "plugin",
                 "endpoint": "audio_interface/brutefir",
-                "method": "saveBruteFirConfigRoom"
+                "method": "applyBruteFirDelays"
             },
             "saveButton": {
                 "label": "TRANSLATE.APPLY",
                 "data": [
-                    "ldistance",
-                    "rdistance"
+                    "leftDistance",
+                    "rightDistance"
                 ]
             },
             "content": [
                 {
-                    "id": "ldistance",
+                    "id": "leftDistance",
                     "element": "input",
                     "label": "left speaker distance in cm",
                     "doc": "Left speaker distance from listener in cm. Identical value with right = no effect",
@@ -274,7 +274,7 @@
                     }
                 },
                 {
-                    "id": "rdistance",
+                    "id": "rightDistance",
                     "element": "input",
                     "label": "right speaker distance in cm",
                     "doc": "Right speaker distance from listener in cm. Identical value with left = no effect",
@@ -293,20 +293,20 @@
             "onSave": {
                 "type": "plugin",
                 "endpoint": "audio_interface/brutefir",
-                "method": "fileConvert"
+                "method": "createDrcFilter"
             },
             "saveButton": {
                 "label": "TRANSLATE.CREATE_FILTER",
                 "data": [
-                    "filetoconvert",
-                    "bk",
-                    "drcconfig",
-                    "outputfilename"
+                    "impulseFile",
+                    "targetCurve",
+                    "drcConfig",
+                    "drcOutputFile"
                 ]
             },
             "content": [
                 {
-                    "id": "filetoconvert",
+                    "id": "impulseFile",
                     "element": "select",
                     "doc": "TRANSLATE.DOC_FILE_TO_CONVERT",
                     "label": "TRANSLATE.FILE_TO_CONVERT",
@@ -317,7 +317,7 @@
                     "options": []
                 },
                 {
-                    "id": "bk",
+                    "id": "targetCurve",
                     "element": "select",
                     "doc": "TRANSLATE.DOC_TARGET_CURVE",
                     "label": "TRANSLATE.TARGET_CURVE",
@@ -328,7 +328,7 @@
                     "options": []
                 },
                 {
-                    "id": "drcconfig",
+                    "id": "drcConfig",
                     "element": "select",
                     "doc": "TRANSLATE.DOC_DRCCONFIG",
                     "label": "TRANSLATE.DRCCONFIG",
@@ -368,7 +368,7 @@
                     ]
                 },
                 {
-                    "id": "outputfilename",
+                    "id": "drcOutputFile",
                     "element": "input",
                     "doc": "TRANSLATE.DOC_OUTPUT_FILE_NAME",
                     "label": "TRANSLATE.OUTPUT_FILE_NAME",

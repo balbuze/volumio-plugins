@@ -163,7 +163,6 @@ ControllerBrutefir.prototype.getUIConfig = function() {
         self.configManager.setUIConfigParam(uiconf, 'sections[2].content[0].value.value', filetoconvertl);
         self.configManager.setUIConfigParam(uiconf, 'sections[2].content[0].value.label', filetoconvertl);
 
-
         fs.readdir(filtersources, function(err, fitem) {
             var fitems;
             var filetoconvert = '' + fitem;
@@ -302,9 +301,10 @@ ControllerBrutefir.prototype.getUIConfig = function() {
 // Plugins dedicated functions: UI actions (Except TOOLS ones. See end of file)
 // ----------------------------------------------------------------------------
 
-/*
-/   Save value to convert file
-*/
+/** 
+ * Create an DRC corrected file from an impulse file and a targeted curve.
+ * See <http://drc-fir.sourceforge.net>  
+ */ 
 ControllerBrutefir.prototype.fileConvert = function(data) {
     var self = this;
     var defer = libQ.defer();
@@ -313,14 +313,15 @@ ControllerBrutefir.prototype.fileConvert = function(data) {
     self.config.set('bk', data['bk'].value);
     self.config.set('drcconfig', data['drcconfig'].value);
     self.config.set('outputfilename', data['outputfilename']);
+
     self.convert()
 
     return defer.promise;
 };
 
-/* 
-/   Save the brutefir config.json
-*/
+/** 
+ * Save the brutefir config.json
+ */
 ControllerBrutefir.prototype.saveBruteFirConfigAccount2 = function(data) {
     var self = this;
     var defer = libQ.defer();
@@ -352,9 +353,9 @@ ControllerBrutefir.prototype.saveBruteFirConfigAccount2 = function(data) {
     return defer.promise;
 };
 
-/*
-/   Save the brutefir delay calculation
-*/
+/**
+ * Save the brutefir delay calculation
+ */
 ControllerBrutefir.prototype.saveBruteFirConfigRoom = function(data) {
     var self = this;
     var defer = libQ.defer();
@@ -379,9 +380,9 @@ ControllerBrutefir.prototype.saveBruteFirConfigRoom = function(data) {
 // Plugins dedicated functions: internal methods (Except TOOLS ones. See end of file)
 // ----------------------------------------------------------------------------
 
-/* 
-/  Auto configuration of plugin. Launched at volumio start & plugin start.
-*/
+/** 
+ * Auto configuration of plugin. Launched at volumio start & plugin start.
+ */
 ControllerBrutefir.prototype.autoConfig = function() {
     var self = this;
     var defer = libQ.defer();
@@ -399,9 +400,10 @@ ControllerBrutefir.prototype.autoConfig = function() {
     return defer.promise;
 };
 
-/*
-/   Convert file using sox and generate filter with DRC-FIR
-*/
+/** 
+ * Create an DRC corrected file from an impulse file and a targeted curve.
+ * See <http://drc-fir.sourceforge.net>  
+ */ 
 ControllerBrutefir.prototype.convert = function(data) {
     var self = this;
 
@@ -477,9 +479,9 @@ ControllerBrutefir.prototype.convert = function(data) {
     };
 };
 
-/*
-/   Create a bruteFir configuration file from template.
-*/
+/**
+ * Create a bruteFir configuration file from template.
+ */
 ControllerBrutefir.prototype.createBruteFirFile = function() {
     var self = this;
     var defer = libQ.defer();
@@ -588,15 +590,18 @@ ControllerBrutefir.prototype.createBruteFirFile = function() {
     return defer.promise;
 };
 
+/**
+ * 
+ */
 ControllerBrutefir.prototype.getAdditionalConf = function(type, controller, data) {
     var self = this;
 
     return self.commandRouter.executeOnPlugin(type, controller, 'getConfigParam', data);
 };
 
-/*
-/   UI - Get labels
-*/
+/**
+ * UI - Get labels
+ */
 ControllerBrutefir.prototype.getLabelForSelect = function(options, key) {
     var n = options.length;
     for (var i = 0; i < n; i++) {
@@ -607,9 +612,9 @@ ControllerBrutefir.prototype.getLabelForSelect = function(options, key) {
     return 'VALUE NOT FOUND BETWEEN SELECT OPTIONS!';
 };
 
-/*
-*   load snd_aloop module to provide a Loopback device
-*/
+/**
+ * load snd_aloop module to provide a Loopback device
+ */
 ControllerBrutefir.prototype.modprobeLoopbackDevice = function() {
     var self = this;
     var defer = libQ.defer();
@@ -631,9 +636,9 @@ ControllerBrutefir.prototype.modprobeLoopbackDevice = function() {
     }, 500)
 };
 
-/*
-/   callback function when Volumio's alsa output selection change.
-*/
+/**
+ * callback function when Volumio's alsa output selection change.
+ */
 ControllerBrutefir.prototype.outputDeviceCallback = function() {
     var self = this;
     var defer = libQ.defer();
@@ -648,9 +653,9 @@ ControllerBrutefir.prototype.outputDeviceCallback = function() {
     return defer.promise;
 };
 
-/*
-/   Rebuild BruteFir Configuration
-*/
+/**
+ * Rebuild BruteFir Configuration
+ */
 ControllerBrutefir.prototype.rebuildBruteFirAndRestartDaemon = function() {
     var self = this;
     var defer = libQ.defer();
@@ -687,9 +692,9 @@ ControllerBrutefir.prototype.rebuildBruteFirAndRestartDaemon = function() {
     return defer.promise;
 };
 
-/*
-/   Restore config of volumio when the plugin is disabled
-*/
+/**
+ * Restore config of volumio when the plugin is disabled
+ */
 ControllerBrutefir.prototype.restoreSettingWhenDisabling = function() {
     var self = this;
 
@@ -712,9 +717,9 @@ ControllerBrutefir.prototype.restoreSettingWhenDisabling = function() {
     return self.commandRouter.executeOnPlugin('audio_interface', 'alsa_controller', 'saveAlsaOptions', str);
 };
 
-/*
-/   Previous Volumio's configuration restoring. Called on alsa configuration change through Volumio's IHM.
-*/
+/**
+ * Previous Volumio's configuration restoring. Called on alsa configuration change through Volumio's IHM.
+ */
 ControllerBrutefir.prototype.restoreVolumioConfig = function() {
     var self = this;
 
@@ -733,9 +738,9 @@ ControllerBrutefir.prototype.restoreVolumioConfig = function() {
     });
 };
 
-/*
-/   generate the file containing samples format available on the used hw
-*/
+/**
+ * generate the file containing samples format available on the used hw
+ */
 ControllerBrutefir.prototype.sampleFormat = function() {
     var self = this;
 
@@ -764,9 +769,9 @@ ControllerBrutefir.prototype.sampleFormat = function() {
     }, 25)
 };
 
-/*
-/   Register all current hardware configuration
-*/
+/**
+ * Register all current hardware configuration
+ */
 ControllerBrutefir.prototype.saveHardwareAudioParameters = function() {
     var self = this;
     var defer = libQ.defer();
@@ -802,9 +807,9 @@ ControllerBrutefir.prototype.saveHardwareAudioParameters = function() {
     return defer.promise;
 };
 
-/*
-/   Current Volumio's configuration backup. Called during autoConfiguration step.
-*/
+/**
+ * Current Volumio's configuration backup. Called during autoConfiguration step.
+ */
 ControllerBrutefir.prototype.saveVolumioConfig = function() {
     var self = this;
 
@@ -822,9 +827,9 @@ ControllerBrutefir.prototype.saveVolumioConfig = function() {
     });
 };
 
-/*
-*   Set the Loopback output 
-*/
+/**
+ * Set the Loopback output 
+ */
 ControllerBrutefir.prototype.setLoopbackOutput = function() {
     var self = this;
     var defer = libQ.defer();
@@ -864,18 +869,18 @@ ControllerBrutefir.prototype.setLoopbackOutput = function() {
     return defer.promise;
 };
 
-/*
-/
-*/
+/**
+ *
+ */
 ControllerBrutefir.prototype.setAdditionalConf = function(type, controller, data) {
     var self = this;
 
     return self.commandRouter.executeOnPlugin(type, controller, 'setConfigParam', data);
 };
 
-/*
-/
-*/
+/**
+ *
+ */
 ControllerBrutefir.prototype.setVolumeParameters = function() {
     var self = this;
 
@@ -909,9 +914,9 @@ ControllerBrutefir.prototype.setVolumeParameters = function() {
     }, 8000);
 };
 
-/*
-/   Start the BruteFir service. Called during start plugin lifecycle.
-*/
+/**
+ * Start the BruteFir service. Called during start plugin lifecycle.
+ */
 ControllerBrutefir.prototype.startBruteFirDaemon = function() {
     var self = this;
     var defer = libQ.defer();
@@ -935,9 +940,9 @@ ControllerBrutefir.prototype.startBruteFirDaemon = function() {
 // Plugins TOOLS dedicated functions: UI TOOLS's actions.
 // ----------------------------------------------------------------------------
 
-/*
-/   Download and install tools
-*/
+/**
+ * Download and install tools
+ */
 ControllerBrutefir.prototype.installTools = function(data) {
     var self = this;
 
@@ -968,9 +973,9 @@ ControllerBrutefir.prototype.installTools = function(data) {
     });
 };
 
-/*
-/   Play left sweep when button is pressed
-*/
+/**
+ * Play left sweep when button is pressed
+ */
 ControllerBrutefir.prototype.playLeftSweepFile = function(track) {
     var self = this;
 
@@ -986,9 +991,9 @@ ControllerBrutefir.prototype.playLeftSweepFile = function(track) {
     };
 };
 
-/*
-/   Play right sweep when button is pressed
-*/
+/**
+ * Play right sweep when button is pressed
+ */
 ControllerBrutefir.prototype.playRightSweepFile = function(track) {
     var self = this;
 
@@ -1004,9 +1009,9 @@ ControllerBrutefir.prototype.playRightSweepFile = function(track) {
     };
 };
 
-/*
-/   Play both channel when button is pressed
-*/
+/**
+ * Play both channel when button is pressed
+ */
 ControllerBrutefir.prototype.playBothSweepFile = function(track) {
     var self = this;
     
@@ -1022,9 +1027,9 @@ ControllerBrutefir.prototype.playBothSweepFile = function(track) {
     };
 };
 
-/*
-/   Play left pink noise channel when button is pressed
-*/
+/**
+ * Play left pink noise channel when button is pressed
+ */
 ControllerBrutefir.prototype.playLeftPinkFile = function(track) {
     var self = this;
     
@@ -1040,9 +1045,9 @@ ControllerBrutefir.prototype.playLeftPinkFile = function(track) {
     };
 };
 
-/*
-/   Play right pink noise channel when button is pressed
-*/
+/**
+ * Play right pink noise channel when button is pressed
+ */
 ControllerBrutefir.prototype.playRightPinkFile = function(track) {
     var self = this;
     
@@ -1058,9 +1063,9 @@ ControllerBrutefir.prototype.playRightPinkFile = function(track) {
     };
 };
 
-/*
-/   Play both pink noise channels when button is pressed
-*/
+/**
+ * Play both pink noise channels when button is pressed
+ */
 ControllerBrutefir.prototype.playBothPinkFile = function(track) {
     var self = this;
 
@@ -1076,9 +1081,9 @@ ControllerBrutefir.prototype.playBothPinkFile = function(track) {
     };
 };
 
-/*
-/   Stop aplay
-*/
+/**
+ * Stop aplay
+ */
 ControllerBrutefir.prototype.stopAplay = function(track) {
     var self = this;
 
@@ -1089,9 +1094,9 @@ ControllerBrutefir.prototype.stopAplay = function(track) {
     };
 };
 
-/*
-/   Remove tools
-*/
+/**
+ * Remove tools
+ */
 ControllerBrutefir.prototype.removeTools = function(data) {
     var self = this;
 
